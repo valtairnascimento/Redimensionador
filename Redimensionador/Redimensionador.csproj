@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Arquivos_Entrada\" />
+    <Folder Include="Arquivos_Redimensionados\" />
+    <Folder Include="Arquivos_Finalizados\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
+  </ItemGroup>
+
 </Project>
