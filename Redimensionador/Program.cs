@@ -42,25 +42,32 @@ namespace Redimensionador
             FileStream fileStream;
             FileInfo fileInfo;
 
+            int[] tamanhos = { 200, 400, 600 };
+
+
             while (true)
             {
 
                var arquivosEntrada = Directory.EnumerateFiles(diretorioEntrada);
 
-                int novaAltura = 200;
 
                 foreach (var arquivo in arquivosEntrada)
                 {
                      fileStream = new FileStream(arquivo, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
                      fileInfo = new FileInfo(arquivo);
 
-                    string caminho = Environment.CurrentDirectory + @"\" + diretorioRedimensionado + @"\" + DateTime.Now.Millisecond.ToString()+"_"+  fileInfo.Name;
+                    foreach (var tamanho in tamanhos)
+                    {
+                        string caminho = Path.Combine(diretorioRedimensionado, $"{DateTime.Now.Millisecond}_{tamanho}_{fileInfo.Name}");
 
-                    Redimensionador(Image.FromStream(fileStream), novaAltura, caminho);
+                        Redimensionador(Image.FromStream(fileStream), tamanho, caminho);
+                    }
+
+                   
 
                     fileStream.Close();
 
-                    string caminhoFinalizado = Environment.CurrentDirectory + @"\" + diretotioFinalizado + @"\" + fileInfo.Name;
+                    string caminhoFinalizado = Path.Combine(diretotioFinalizado, fileInfo.Name);
                     fileInfo.MoveTo(caminhoFinalizado);
             }
 
@@ -69,7 +76,7 @@ namespace Redimensionador
         }
 
         /// <summary>
-        /// 
+        /// Redimensiona a imagem para a altura especificada mantendo a proporção.
         /// </summary>
         /// <param name="imagem">Imagem a ser redimensionada</param>
         /// <param name="altura">Altura que desejamos redimensionar</param>
@@ -90,6 +97,7 @@ namespace Redimensionador
             }
 
             novaImage.Save(caminho);
+            novaImage.Dispose();
             imagem.Dispose();
         }
     }
